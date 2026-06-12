@@ -1,8 +1,7 @@
-
 const Part = ({ part, exercises }) => {
   return (
     <p>
-      {part} {exercises}
+      {part}: {exercises}
     </p>
   );
 };
