@@ -1,12 +1,15 @@
-const js = require("@eslint/js");
+import js from "@eslint/js";
+import globals from "globals";
 
-module.exports = [
+export default [
+  {
+    ignores: ["frontend/**", "node_modules/**"],
+  },
   js.configs.recommended,
   {
     languageOptions: {
       globals: {
-        process: "readonly",
-        __dirname: "readonly",
+        ...globals.node,
       },
     },
     rules: {
@@ -14,7 +17,7 @@ module.exports = [
       "no-trailing-spaces": "error",
       "object-curly-spacing": ["error", "always"],
       "arrow-spacing": ["error", { before: true, after: true }],
-      "no-console": "off",
+      "no-console": "off", // console.log to log the backend
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     },
   },
