@@ -41,6 +41,7 @@ const App = () => {
     const existingPerson = persons.find(
       (person) => person.name.toLowerCase() === trimmedName.toLowerCase(),
     );
+
     if (existingPerson) {
       const confirmUpdate = window.confirm(
         `${trimmedName} is already added to phonebook, replace the old number with a new one?`,
@@ -65,11 +66,19 @@ const App = () => {
             );
           })
           .catch((error) => {
-            showNotification(
-              `Information of ${existingPerson.name} has already been removed from server`,
-              "error",
-            );
-            setPersons(persons.filter((p) => p.id !== existingPerson.id));
+            if (
+              error.response &&
+              error.response.data &&
+              error.response.data.error
+            ) {
+              showNotification(error.response.data.error, "error");
+            } else {
+              showNotification(
+                `Information of ${existingPerson.name} has already been removed from server`,
+                "error",
+              );
+              setPersons(persons.filter((p) => p.id !== existingPerson.id));
+            }
           });
       }
       return;
@@ -80,13 +89,17 @@ const App = () => {
       number: trimmedNumber,
     };
 
-    personService.createPerson(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-
-      showNotification(`Added ${returnedPerson.name}`, "success");
-    });
+    personService
+      .createPerson(personObject)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+        showNotification(`Added ${returnedPerson.name}`, "success");
+      })
+      .catch((error) => {
+        showNotification(error.response.data.error, "error");
+      });
   };
 
   const deletePersonOf = (id, name) => {
@@ -97,7 +110,7 @@ const App = () => {
           setPersons(persons.filter((p) => p.id !== id));
           showNotification(`Deleted ${name}`, "success");
         })
-        .catch((error) => {
+        .catch(() => {
           showNotification(
             `Information of ${name} has already been removed from server`,
             "error",
