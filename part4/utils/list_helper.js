@@ -1,5 +1,3 @@
-
-
 // 4.3
 const dummy = (blogs) => {
   return 1;
