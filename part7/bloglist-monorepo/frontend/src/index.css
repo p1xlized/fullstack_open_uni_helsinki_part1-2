@@ -1,0 +1,22 @@
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #1e66f5;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #7287fd;
+}
+.success {
+  color: #40a02b;
+  background: #ccd0da;
+  padding: 10px;
+  border: 1px solid#40a02b;
+}
